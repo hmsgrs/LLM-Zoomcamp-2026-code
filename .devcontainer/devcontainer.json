@@ -7,5 +7,5 @@
   "remoteEnv": {
     "PATH": "/home/vscode/.local/bin:${containerEnv:PATH}"
   },
-  "postCreateCommand": "curl -LsSf https://astral.sh/uv/install.sh | sh"
+  "postCreateCommand": "python -m pip install --user uv"
 }
