@@ -1,0 +1,7 @@
+FROM mcr.microsoft.com/devcontainers/python:1-3.12-bookworm
+
+# Remove a broken Yarn apt source from the base image and install Docker CLI.
+RUN rm -f /etc/apt/sources.list.d/yarn.list /etc/apt/sources.list.d/yarn.sources \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends docker.io git-lfs \
+    && rm -rf /var/lib/apt/lists/*
