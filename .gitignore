@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 *.db
 .ipynb_checkpoints/
+lessons/lesson02/homework/models/
