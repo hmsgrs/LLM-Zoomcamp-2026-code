@@ -1,0 +1,44 @@
+2026-07-06T14:59:45.330107Z INFO Competitive Intelligence Report
+=====================================
+
+Company: Kestra
+Summary: Kestra (kestra.io) is an open-source workflow orchestration platform for automating, running, and monitoring workflows across infrastructure, data, AI, and other systems. It offers workflow creation as code, via a UI, and with AI-assisted authoring, and is positioned as a scalable, declarative, AI-native orchestration solution.
+
+Recent News:
+
+- Series A financing to accelerate platform growth (2025)
+  Kestra announced a $25 million Series A round to scale its orchestration platform and expand adoption.
+
+- Enterprise revenue growth milestone (2025)
+  In connection with its funding announcement, Kestra said enterprise revenue had grown 25x since its seed round about 18 months earlier.
+
+- Workflow execution scale milestone (2025)
+  Kestra reported that its platform had executed more than 2 billion workflows, representing roughly 20x year-over-year growth.
+
+
+Competitors:
+
+- Apache Airflow
+
+- Prefect
+
+- Dagster
+
+- Temporal
+
+- Argo Workflows
+
+- Flyte
+
+- Control-M
+
+- StackStorm
+
+
+System Performance:
+- Main agent tokens: 1450
+
+Multi-Agent Pattern:
+This demonstrates how the main analyst agent delegated the research
+work to a specialized research agent, achieving modularity and
+separation of concerns.

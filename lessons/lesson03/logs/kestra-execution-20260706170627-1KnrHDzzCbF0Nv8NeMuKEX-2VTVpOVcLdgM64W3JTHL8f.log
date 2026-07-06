@@ -1,0 +1,40 @@
+2026-07-06T15:05:54.752927Z INFO Competitive Intelligence Report
+=====================================
+
+Company: Kestra
+Summary: Kestra.io is a France-founded open-source orchestration software company focused on workflow orchestration across data pipelines, AI agents, infrastructure automation, and business processes. The platform is declarative and YAML-based, supports visual and code-driven workflow creation, and is positioned as cloud-native, event-driven, and language-agnostic. Kestra emphasizes scalability, observability, multi-environment deployment, and a broad plugin ecosystem, with expansion into enterprise and agentic AI use cases.
+
+Recent News:
+
+- Kestra raises $25 million Series A (2026-03-31)
+  Kestra announced a $25 million Series A led by RTP Global, with participation from Alven, ISAI, and Axeleo, bringing total funding to about $36 million. The company said the funding would support Kestra 2.0, growth of Kestra Cloud, go-to-market expansion in North America and Europe, and continued investment in its open-source ecosystem.
+
+- Kestra outlines Kestra 2.0 product roadmap (2026-03-31)
+  Alongside its Series A announcement, Kestra highlighted Kestra 2.0 as a major product milestone featuring a new distributed execution engine, real-time observability, and agentic orchestration capabilities for more complex enterprise workflows.
+
+- Kestra signals stronger enterprise and AI-agent positioning (2025)
+  Recent company messaging and product positioning increasingly frame Kestra as an AI-native orchestration platform spanning enterprise workflows, data operations, and AI agents, supported by its no-code, code-first, and AI-assisted workflow creation approach.
+
+
+Competitors:
+
+- Temporal
+
+- Prefect
+
+- Apache Airflow
+
+- Dagster
+
+- n8n
+
+- Orchestra
+
+
+System Performance:
+- Main agent tokens: 3489
+
+Multi-Agent Pattern:
+This demonstrates how the main analyst agent delegated the research
+work to a specialized research agent, achieving modularity and
+separation of concerns.

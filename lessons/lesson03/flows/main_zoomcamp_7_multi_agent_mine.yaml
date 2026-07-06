@@ -1,0 +1,146 @@
+id: 7_multi_agent_mine
+namespace: zoomcamp
+
+description: |
+  This flow demonstrates a multi-agent system where specialized agents collaborate.
+  Architecture:
+  - Main Agent (Analyst): Synthesizes findings and creates structured reports
+  - Research Agent (Tool): Gathers web data using Tavily search
+  The main agent uses the research agent as a TOOL, demonstrating how agents can delegate specialized work to other agents.
+
+inputs:
+  - id: company_name
+    type: STRING
+    description: The company to research
+    defaults: kestra.io
+
+tasks:
+  - id: analysis
+    type: io.kestra.plugin.ai.agent.AIAgent
+    description: Main analyst agent that orchestrates research
+    configuration:
+      logRequests: false
+      logResponses: false
+    provider:
+      type: io.kestra.plugin.ai.provider.OpenAI
+    systemMessage: |
+      You are a senior market intelligence analyst.
+
+      You have access to one research tool for web search.
+
+      Critical tool-calling rules:
+      - When calling the research tool, pass ONLY a short web search query.
+      - The research tool prompt must be less than 300 characters.
+      - Never send JSON schemas, formatting rules, long explanations, or final output instructions to the research tool.
+      - Never paste the full user request into the research tool.
+      - Use 2 to 4 short focused searches instead of one long search.
+      - Each search should target only one topic such as:
+        - company overview
+        - recent news
+        - competitors
+        - funding
+        - product announcements
+
+      Search query style rules:
+      - Use terse keyword queries, not sentences.
+      - Prefer queries like:
+        "kestra recent news 2026"
+        "kestra competitors workflow orchestration"
+        "kestra company overview products"
+      - Keep every tool prompt under 300 characters.
+
+      Final answer rules:
+      - After using the research tool, synthesize the findings yourself.
+      - Output must be a valid JSON object only.
+      - Do not use markdown.
+      - Do not use code fences.
+      - Do not include commentary outside the JSON.
+      - If information is incomplete, use best-effort factual synthesis, but keep the required fields populated.
+    prompt: |
+      Research the company "{{ inputs.company_name }}".
+
+      First, use the research tool with a few short focused search queries.
+      Then produce a single valid JSON object with this structure:
+
+      {
+        "company": "string",
+        "summary": "string",
+        "recent_news": [
+          {
+            "title": "string",
+            "date": "string",
+            "description": "string"
+          }
+        ],
+        "competitors": ["string"]
+      }
+
+      Requirements:
+      - Include at least two recent_news entries.
+      - Include at least two competitors.
+      - Return only JSON.
+    tools:
+      - type: io.kestra.plugin.ai.tool.AIAgent
+        description: |
+          Web research tool. Input must be a short search query only, under 300 characters.
+          Use it for focused company research such as overview, recent news, products, funding, or competitors.
+          Do not send formatting instructions, JSON schema, or long task descriptions.
+        configuration:
+          logRequests: false
+          logResponses: false
+        systemMessage: |
+          You are a web research assistant.
+
+          The incoming prompt is a search query, not a full assignment.
+
+          Rules:
+          - Treat the prompt as a short Tavily search query.
+          - The prompt must stay under 300 characters.
+          - Do not expand the query into a long request.
+          - Do not restate instructions.
+          - Search for factual and up-to-date company information as of {{ now() }}.
+          - Focus on recent news, company overview, products, funding, blog posts, and competitors.
+          - Return a concise factual summary only.
+          - No markdown.
+          - No code fences.
+          - No long preambles.
+        provider:
+          type: io.kestra.plugin.ai.provider.OpenAI
+        contentRetrievers:
+          - type: io.kestra.plugin.ai.retriever.TavilyWebSearch
+            apiKey: "{{ secret('TAVILY_API_KEY') }}"
+            maxResults: 5
+
+  - id: parse_results
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      Competitive Intelligence Report
+      =====================================
+
+      Company: {{ json(outputs.analysis.textOutput).company }}
+      Summary: {{ json(outputs.analysis.textOutput).summary }}
+
+      Recent News:
+      {% for news in json(outputs.analysis.textOutput).recent_news %}
+      - {{ news.title }} ({{ news.date }})
+        {{ news.description }}
+      {% endfor %}
+
+      Competitors:
+      {% for competitor in json(outputs.analysis.textOutput).competitors %}
+      - {{ competitor }}
+      {% endfor %}
+
+      System Performance:
+      - Main agent tokens: {{ outputs.analysis.tokenUsage.totalTokenCount }}
+
+      Multi-Agent Pattern:
+      This demonstrates how the main analyst agent delegated the research
+      work to a specialized research agent, achieving modularity and
+      separation of concerns.
+
+pluginDefaults:
+  - type: io.kestra.plugin.ai.provider.OpenAI
+    values:
+      modelName: gpt-5.4
+      apiKey: "{{ secret('OPENAI_API_KEY') }}"

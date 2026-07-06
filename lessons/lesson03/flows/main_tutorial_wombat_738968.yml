@@ -1,0 +1,28 @@
+id: wombat_738968
+namespace: tutorial
+inputs:
+  - id: download_url
+    type: STRING
+    description: "The URL of the CSV file to download."
+
+tasks:
+  - id: download_csv_file
+    type: io.kestra.plugin.core.http.Download
+    uri: "{{ inputs.download_url }}"
+
+  - id: upload_to_gcs
+    type: io.kestra.plugin.gcp.gcs.Upload
+    # Replace 'your-gcs-bucket' with your actual GCS bucket name
+    to: gs://your-gcs-bucket/nyc_taxi_data.csv
+    from: "{{ outputs.download_csv_file.uri }}"
+
+  - id: load_to_bigquery
+    type: io.kestra.plugin.gcp.bigquery.LoadFromGcs
+    # Replace 'your_project_id.your_dataset.nyc_taxi_data' with your actual BigQuery project, dataset, and table
+    destinationTable: your_project_id.your_dataset.nyc_taxi_data
+    format: CSV
+    csvOptions:
+      skipLeadingRows: 1
+      fieldDelimiter: ","
+    from:
+      - "{{ outputs.download_csv_file.uri }}"
