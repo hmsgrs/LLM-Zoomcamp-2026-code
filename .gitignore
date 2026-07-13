@@ -6,3 +6,6 @@ __pycache__/
 *.db
 .ipynb_checkpoints/
 lessons/lesson02/homework/models/
+*/models/*
+lessons/lesson04/homework/models/
+
