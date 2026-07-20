@@ -24,4 +24,5 @@ dependencies = [
 [tool.uv.workspace]
 members = [
     "lessons/lesson02/homework",
+    "lessons/lesson05/homework",
 ]
